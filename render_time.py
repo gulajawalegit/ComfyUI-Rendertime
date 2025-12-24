@@ -8,7 +8,7 @@ class RenderTimeStart:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "trigger": ("*",),  # execution trigger
+                "trigger": ("ANY",),  # execution trigger
             }
         }
 
@@ -31,7 +31,7 @@ class RenderTimeEnd:
         return {
             "required": {
                 "start_time": ("FLOAT",),
-                "trigger": ("*",),
+                "trigger": ("ANY",),
             }
         }
 
