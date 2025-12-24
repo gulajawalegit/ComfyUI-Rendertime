@@ -1,31 +1,37 @@
 import time
 
-class RenderTime_Start:
+# =========================
+# Render Time - Start Node
+# =========================
+class RenderTimeStart:
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "trigger": ("*",),  # Menerima input apa pun sebagai pemicu
+                "trigger": ("*",),  # execution trigger
             }
         }
 
-    RETURN_TYPES = ("RENDER_START_TIME",)
+    RETURN_TYPES = ("FLOAT",)
+    RETURN_NAMES = ("start_time",)
     FUNCTION = "start"
     CATEGORY = "utils/timer"
-    OUTPUT_NODE = False
 
     def start(self, trigger):
         start_time = time.time()
         return (start_time,)
 
 
-class RenderTime_End:
+# =========================
+# Render Time - End Node
+# =========================
+class RenderTimeEnd:
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "start_time": ("RENDER_START_TIME",),
-                "trigger": ("*",),  # Biasanya sambungkan output akhir (misal: VHS_FILENAMES)
+                "start_time": ("FLOAT",),
+                "trigger": ("*",),
             }
         }
 
@@ -33,22 +39,22 @@ class RenderTime_End:
     RETURN_NAMES = ("render_time_seconds",)
     FUNCTION = "end"
     CATEGORY = "utils/timer"
-    OUTPUT_NODE = False
 
     def end(self, start_time, trigger):
-        end_time = time.time()
-        duration = max(0.0, end_time - start_time)
-        print(f"✅ Render selesai dalam {duration:.2f} detik")
+        duration = max(0.0, time.time() - start_time)
+        print(f"[RenderTime] Render finished in {duration:.2f} seconds")
         return (duration,)
 
 
-# Pendaftaran node untuk ComfyUI
+# =========================
+# ComfyUI Mappings
+# =========================
 NODE_CLASS_MAPPINGS = {
-    "RenderTime_Start": RenderTime_Start,
-    "RenderTime_End": RenderTime_End,
+    "RenderTimeStart": RenderTimeStart,
+    "RenderTimeEnd": RenderTimeEnd,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "RenderTime_Start": "⏱️ Render Time (Start)",
-    "RenderTime_End": "⏱️ Render Time (End)",
+    "RenderTimeStart": "⏱️ Render Time Start",
+    "RenderTimeEnd": "⏱️ Render Time End",
 }
