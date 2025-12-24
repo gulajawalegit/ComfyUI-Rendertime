@@ -1,14 +1,14 @@
 import time
 
-# ======================================================
-# Render Time - Start Node CONDITIONING
-# ======================================================
+# =========================
+# Render Time - Start Node
+# =========================
 class RenderTimeStart:
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "trigger": ("STRING",)  # execution trigger
+                "trigger": ("STRING",),  # execution trigger
             }
         }
 
@@ -22,16 +22,16 @@ class RenderTimeStart:
         return (start_time,)
 
 
-# ======================================================
+# =========================
 # Render Time - End Node
-# ======================================================
+# =========================
 class RenderTimeEnd:
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
                 "start_time": ("FLOAT",),
-                "trigger": ("VHS_FILENAMES",)
+                "trigger": ("VHS_FILENAMES",),
             }
         }
 
@@ -41,51 +41,20 @@ class RenderTimeEnd:
     CATEGORY = "utils/timer"
 
     def end(self, start_time, trigger):
-        duration = max(0.0, time.perf_counter() - start_time)
+        duration = max(0.0, time.time() - start_time)
         print(f"[RenderTime] Render finished in {duration:.2f} seconds")
         return (duration,)
 
 
-# ======================================================
-# Render Time - Pass Through (Execution Anchor)
-# ======================================================
-class RenderTimePassThrough:
-    """
-    Node ini BERFUNGSI PENTING:
-    - Memastikan RenderTimeEnd masuk execution graph
-    - Mencegah node merah (invalid execution)
-    - Tidak mengubah data sama sekali
-    """
-
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "input": ("ANY",),
-                "trigger": ("ANY",),
-            }
-        }
-
-    RETURN_TYPES = ("ANY",)
-    RETURN_NAMES = ("output",)
-    FUNCTION = "run"
-    CATEGORY = "utils/timer"
-
-    def run(self, input, trigger):
-        return (input,)
-
-
-# ======================================================
-# ComfyUI Node Mappings
-# ======================================================
+# =========================
+# ComfyUI Mappings
+# =========================
 NODE_CLASS_MAPPINGS = {
     "RenderTimeStart": RenderTimeStart,
     "RenderTimeEnd": RenderTimeEnd,
-    "RenderTimePassThrough": RenderTimePassThrough,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "RenderTimeStart": "⏱ Render Time Start",
-    "RenderTimeEnd": "⏱ Render Time End",
-    "RenderTimePassThrough": "⏱ Render Time Pass Through",
+    "RenderTimeStart": "⏱️ Render Time Start",
+    "RenderTimeEnd": "⏱️ Render Time End",
 }
